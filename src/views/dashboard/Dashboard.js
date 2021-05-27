@@ -61,7 +61,7 @@ const Dashboard = () => {
       </CCard>
       <CCard>
         <CCardHeader>
-          Operator
+          Sales by Operator
         </CCardHeader>
         <CCardBody>
           <CChartPie
