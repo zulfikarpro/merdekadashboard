@@ -10,33 +10,28 @@ import {
 } from '@coreui/react'
 // import CIcon from '@coreui/icons-react'
 import ChartLineSimple from '../charts/ChartLineSimple'
+import currency from '../../utils/currency'
 // import ChartBarSimple from '../charts/ChartBarSimple'
 
 // import contentResponse from '../../response.json'
 
 const WidgetsDropdown = (props) => {
-  const dataResponse = props.data;
-  const memberTotal = dataResponse.member;
-  const transactionSucceed = dataResponse.transaction.success;
-  console.log(dataResponse);
-  // const response = contentResponse.data;
-  // render
+const {member, transactionSuccess, transactionFailed, transactionAmount} = props
   return (
     <CRow>
       <CCol sm="6" lg="4">
         <CWidgetDropdown
           color="gradient-primary"
-          header= {memberTotal}
+          header= {member.toString()}
           text="Store"
           footerSlot={
             <ChartLineSimple
               pointed
               className="c-chart-wrapper mt-3 mx-3"
               style={{height: '70px'}}
-              dataPoints={[0 , memberTotal]}
+              dataPoints={[0 , member]}
               pointHoverBackgroundColor="primary"
               label="Store"
-              // labels="months"
             />
           }
         >
@@ -57,14 +52,14 @@ const WidgetsDropdown = (props) => {
       <CCol sm="6" lg="4">
         <CWidgetDropdown
           color="gradient-info"
-          header= {transactionSucceed}
+          header= {transactionSuccess.toString()}
           text="Transaction Succeed"
           footerSlot={
             <ChartLineSimple
               pointed
               className="c-chart-wrapper mt-3 mx-3"
               style={{height: '70px'}}
-              dataPoints={[0, transactionSucceed]}
+              dataPoints={[0, transactionSuccess]}
               pointHoverBackgroundColor="info"
               label="Transaction"
               labels="months"
@@ -77,14 +72,14 @@ const WidgetsDropdown = (props) => {
       <CCol sm="6" lg="4">
         <CWidgetDropdown
           color="gradient-warning"
-          header="Rp 157.100"
+          header={currency(transactionAmount)}
           text="Transaction Amount"
           footerSlot={
             <ChartLineSimple
               pointed
               className="c-chart-wrapper mt-3 mx-3"
               style={{height: '70px'}}
-              dataPoints={[21400, 37500, 42100, 4900, 51200]}
+              // dataPoints={[21400, 37500, 42100, 4900, 51200]}
               pointHoverBackgroundColor="warning"
               label="Amount"
               labels="months"

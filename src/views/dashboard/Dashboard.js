@@ -22,17 +22,19 @@ import {
   // CChartPolarArea
 } from '@coreui/react-chartjs'
 
-import CIcon from '@coreui/icons-react'
+// import CIcon from '@coreui/icons-react'
 
-import MainChartExample from '../charts/MainChartExample.js'
+// import MainChartExample from '../charts/MainChartExample.js'
 import axios from 'axios'
 
+// import currency from '../../utils/currency'
 const WidgetsDropdown = lazy(() => import('../widgets/WidgetsDropdown.js'))
-const WidgetsBrand = lazy(() => import('../widgets/WidgetsBrand.js'))
+// const WidgetsBrand = lazy(() => import('../widgets/WidgetsBrand.js'))
 
 const Dashboard = () => {
-  const URL = process.env.REACT_SERVICE_URL;
-  const [dataResponse, setDataResponse] = useState({});
+  const URL = process.env.REACT_APP_SERVICE_URL;
+  // console.log(URL)
+  // const [dataResponse, setDataResponse] = useState({});
   const [member, setMember] = useState(0);
   const [transactionSuccess, setTransactionSuccess] = useState(0);
   const [transactionFailed, setTransactionFailed] = useState(0);
@@ -42,34 +44,50 @@ const Dashboard = () => {
   const [telkomselTransaction, setTelkomselTransaction] = useState(0);
   const [threeTransaction, setThreeTransaction] = useState(0);
   const [xlTransaction, setXlTransaction] = useState(0);
+  const [transcationAmount, setTransactionAmount] = useState(0);
 
-  const setData = () => {
-    // const dataTransaction = {};
-    setMember(dataResponse.member);
-    console.log('success ',dataResponse);
-    setTransactionSuccess(dataResponse.transaction.success);
-    setTransactionFailed(dataResponse.transaction.failed)
-    // setTransactionStatus.Success(dataResponse.transaction['success']);
-    // setTransactionStatus.Failed(dataResponse.transaction['failed'])
-  }
+  // const setData = () => {
+  //   // const dataTransaction = {};
+  //   setMember(dataResponse.member);
+  //   console.log('success ',member);
+  //   setTransactionSuccess(dataResponse.transaction.success);
+  //   setTransactionFailed(dataResponse.transaction.failed)
+  //   // setTransactionStatus.Success(dataResponse.transaction['success']);
+  //   // setTransactionStatus.Failed(dataResponse.transaction['failed'])
+  // }
 
   useEffect(async ()=>{
-    const req = await axios.get('http://localhost:4031'+'/transaction');
-    if(req.status===200){
-      setDataResponse(req.data)
-      setTransactionSuccess(req.data.transaction.success);
-      setTransactionFailed(req.data.transaction.failed)
-      // setData()
+    const fetchData = async()=>{
+      const req = await axios.get(URL+'/transaction');
+      if(req.status===200){
+        const productSales = req.data.productSales;
+        // setDataResponse(req.data)
+        setMember(req.data.member);
+        setTransactionSuccess(req.data.transaction.success);
+        setTransactionFailed(req.data.transaction.failed)
+        setTransactionAmount(req.data.transaction.totalAmount);
+        setAxisTransaction(productSales.axis);
+        setIndosatTransaction(productSales.indosat);
+        setSmartfrenTransaction(productSales.smartfren);
+        setTelkomselTransaction(productSales.telkomsel);
+        setThreeTransaction(productSales.tri);
+        setXlTransaction(productSales.xl);
+        // console.log('success ',member);
+        // setData()
+      }
     }
-    // axios.get('http://localhost:4031'+'/transaction').then((result)=>{
-    //   console.log('result', result)
-    // })
+    fetchData();
   },[])
   
 
   return (
     <>
-      <WidgetsDropdown data={dataResponse}/>
+      <WidgetsDropdown 
+      member={member} 
+      transactionSuccess={transactionSuccess}
+      transactionFailed={transactionFailed}
+      transactionAmount={transcationAmount}
+      />
       
       <CCardGroup columns className = "cols-2" >
       <CCard>
