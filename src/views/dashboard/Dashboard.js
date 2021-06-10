@@ -1,38 +1,75 @@
-import React, { lazy } from 'react'
+import React, { lazy, useEffect, useState } from 'react'
 import {
-  CBadge,
-  CButton,
-  CButtonGroup,
+  // CBadge,
+  // CButton,
+  // CButtonGroup,
   CCard,
   CCardBody,
-  CCardFooter,
+  // CCardFooter,
   CCardGroup,
   CCardHeader,
-  CCol,
-  CProgress,
-  CRow,
-  CCallout
+  // CCol,
+  // CProgress,
+  // CRow,
+  // CCallout
 } from '@coreui/react'
 import {
-  CChartBar,
-  CChartLine,
-  CChartDoughnut,
-  CChartRadar,
+  // CChartBar,
+  // CChartLine,
+  // CChartDoughnut,
+  // CChartRadar,
   CChartPie,
-  CChartPolarArea
+  // CChartPolarArea
 } from '@coreui/react-chartjs'
 
 import CIcon from '@coreui/icons-react'
 
 import MainChartExample from '../charts/MainChartExample.js'
+import axios from 'axios'
 
 const WidgetsDropdown = lazy(() => import('../widgets/WidgetsDropdown.js'))
 const WidgetsBrand = lazy(() => import('../widgets/WidgetsBrand.js'))
 
 const Dashboard = () => {
+  const URL = process.env.REACT_SERVICE_URL;
+  const [dataResponse, setDataResponse] = useState({});
+  const [member, setMember] = useState(0);
+  const [transactionSuccess, setTransactionSuccess] = useState(0);
+  const [transactionFailed, setTransactionFailed] = useState(0);
+  const [axisTransaction, setAxisTransaction] = useState(0);
+  const [indosatTransaction, setIndosatTransaction] = useState(0);
+  const [smartfrenTransaction, setSmartfrenTransaction] = useState(0);
+  const [telkomselTransaction, setTelkomselTransaction] = useState(0);
+  const [threeTransaction, setThreeTransaction] = useState(0);
+  const [xlTransaction, setXlTransaction] = useState(0);
+
+  const setData = () => {
+    // const dataTransaction = {};
+    setMember(dataResponse.member);
+    console.log('success ',dataResponse);
+    setTransactionSuccess(dataResponse.transaction.success);
+    setTransactionFailed(dataResponse.transaction.failed)
+    // setTransactionStatus.Success(dataResponse.transaction['success']);
+    // setTransactionStatus.Failed(dataResponse.transaction['failed'])
+  }
+
+  useEffect(async ()=>{
+    const req = await axios.get('http://localhost:4031'+'/transaction');
+    if(req.status===200){
+      setDataResponse(req.data)
+      setTransactionSuccess(req.data.transaction.success);
+      setTransactionFailed(req.data.transaction.failed)
+      // setData()
+    }
+    // axios.get('http://localhost:4031'+'/transaction').then((result)=>{
+    //   console.log('result', result)
+    // })
+  },[])
+  
+
   return (
     <>
-      <WidgetsDropdown />
+      <WidgetsDropdown data={dataResponse}/>
       
       <CCardGroup columns className = "cols-2" >
       <CCard>
@@ -47,7 +84,7 @@ const Dashboard = () => {
                   '#41B883',
                   '#E46651',
                 ],
-                data: [82, 18]
+                data: [transactionSuccess, transactionFailed]
               }
             ]}
             labels={['Success', 'Failed']}
@@ -75,7 +112,7 @@ const Dashboard = () => {
                   '#b2b841',
                   '#5d41b8'
                 ],
-                data: [40, 20, 7, 10, 12, 5]
+                data: [axisTransaction, indosatTransaction, smartfrenTransaction , telkomselTransaction, threeTransaction, xlTransaction]
               }
             ]}
             labels={['Axis', 'Indosat', 'Smartfren', 'Telkomsel', 'Three', 'XL']}

@@ -3,36 +3,40 @@ import {
   CWidgetDropdown,
   CRow,
   CCol,
-  CDropdown,
-  CDropdownMenu,
-  CDropdownItem,
-  CDropdownToggle
+  // CDropdown,
+  // CDropdownMenu,
+  // CDropdownItem,
+  // CDropdownToggle
 } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
+// import CIcon from '@coreui/icons-react'
 import ChartLineSimple from '../charts/ChartLineSimple'
-import ChartBarSimple from '../charts/ChartBarSimple'
+// import ChartBarSimple from '../charts/ChartBarSimple'
 
-import contentResponse from '../../response.json'
+// import contentResponse from '../../response.json'
 
-const WidgetsDropdown = () => {
-  const response = contentResponse.data;
+const WidgetsDropdown = (props) => {
+  const dataResponse = props.data;
+  const memberTotal = dataResponse.member;
+  const transactionSucceed = dataResponse.transaction.success;
+  console.log(dataResponse);
+  // const response = contentResponse.data;
   // render
   return (
     <CRow>
       <CCol sm="6" lg="4">
         <CWidgetDropdown
           color="gradient-primary"
-          header= "5"
-          text="Sales Partner"
+          header= {memberTotal}
+          text="Store"
           footerSlot={
             <ChartLineSimple
               pointed
               className="c-chart-wrapper mt-3 mx-3"
               style={{height: '70px'}}
-              dataPoints={[1, 1, 1, 1, 1]}
+              dataPoints={[0 , memberTotal]}
               pointHoverBackgroundColor="primary"
-              label="Sales Partner"
-              labels="months"
+              label="Store"
+              // labels="months"
             />
           }
         >
@@ -53,14 +57,14 @@ const WidgetsDropdown = () => {
       <CCol sm="6" lg="4">
         <CWidgetDropdown
           color="gradient-info"
-          header= "82"
+          header= {transactionSucceed}
           text="Transaction Succeed"
           footerSlot={
             <ChartLineSimple
               pointed
               className="c-chart-wrapper mt-3 mx-3"
               style={{height: '70px'}}
-              dataPoints={[7, 3, 10 ,12 ,50 ]}
+              dataPoints={[0, transactionSucceed]}
               pointHoverBackgroundColor="info"
               label="Transaction"
               labels="months"
