@@ -3,12 +3,12 @@ import {
   CWidgetDropdown,
   CRow,
   CCol,
-  // CDropdown,
-  // CDropdownMenu,
-  // CDropdownItem,
-  // CDropdownToggle
+  CDropdown,
+  CDropdownMenu,
+  CDropdownItem,
+  CDropdownToggle
 } from '@coreui/react'
-// import CIcon from '@coreui/icons-react'
+import CIcon from '@coreui/icons-react'
 import ChartLineSimple from '../charts/ChartLineSimple'
 import currency from '../../utils/currency'
 // import ChartBarSimple from '../charts/ChartBarSimple'
@@ -17,7 +17,12 @@ import currency from '../../utils/currency'
 
 const WidgetsDropdown = (props) => {
 const {member, transactionSuccess, transactionFailed, transactionAmount} = props
-  return (
+const handleMember = async(filter) =>{
+  
+
+}
+
+return (
     <CRow>
       <CCol sm="6" lg="4">
         <CWidgetDropdown
@@ -35,17 +40,17 @@ const {member, transactionSuccess, transactionFailed, transactionAmount} = props
             />
           }
         >
-          {/* <CDropdown>
+          <CDropdown>
             <CDropdownToggle color="transparent">
               <CIcon name="cil-settings"/>
             </CDropdownToggle>
             <CDropdownMenu className="pt-0" placement="bottom-end">
-              <CDropdownItem>Action</CDropdownItem>
-              <CDropdownItem>Another action</CDropdownItem>
-              <CDropdownItem>Something else here...</CDropdownItem>
+              <CDropdownItem onClick={handleMember('d')}>Harian</CDropdownItem>
+              <CDropdownItem onClick={handleMember('m')}>Bulanan</CDropdownItem>
+              <CDropdownItem onClick={handleMember('y')}>tahunan</CDropdownItem>
               <CDropdownItem disabled>Disabled action</CDropdownItem>
             </CDropdownMenu>
-          </CDropdown> */}
+          </CDropdown>
         </CWidgetDropdown>
       </CCol>
 

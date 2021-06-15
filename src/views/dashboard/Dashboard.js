@@ -32,7 +32,7 @@ const WidgetsDropdown = lazy(() => import('../widgets/WidgetsDropdown.js'))
 // const WidgetsBrand = lazy(() => import('../widgets/WidgetsBrand.js'))
 
 const Dashboard = () => {
-  const URL = process.env.REACT_APP_SERVICE_URL;
+  const URL = process.env.REACT_APP_ENVIRONMENT==="production"? "http://170.187.226.245:4031" : "http://localhost:4031"
   // console.log(URL)
   // const [dataResponse, setDataResponse] = useState({});
   const [member, setMember] = useState(0);
