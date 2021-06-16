@@ -1,16 +1,20 @@
 import React, { lazy, useEffect, useState } from 'react'
 import {
-  // CBadge,
-  // CButton,
-  // CButtonGroup,
+  CBadge,
+  CButton,
+  CButtonGroup,
   CCard,
   CCardBody,
-  // CCardFooter,
+  CCardFooter,
   CCardGroup,
   CCardHeader,
-  // CCol,
-  // CProgress,
-  // CRow,
+  CCol,
+  CProgress,
+  CRow,
+  CDropdown,
+  CDropdownMenu,
+  CDropdownItem,
+  CDropdownToggle
   // CCallout
 } from '@coreui/react'
 import {
@@ -22,9 +26,9 @@ import {
   // CChartPolarArea
 } from '@coreui/react-chartjs'
 
-// import CIcon from '@coreui/icons-react'
+import CIcon from '@coreui/icons-react'
 
-// import MainChartExample from '../charts/MainChartExample.js'
+import MainChartExample from '../charts/MainChartExample.js'
 import axios from 'axios'
 
 // import currency from '../../utils/currency'
@@ -45,6 +49,13 @@ const Dashboard = () => {
   const [threeTransaction, setThreeTransaction] = useState(0);
   const [xlTransaction, setXlTransaction] = useState(0);
   const [transcationAmount, setTransactionAmount] = useState(0);
+  const [complaintStatus, setComplaintStatus] = useState({solved:0, wait_supplier:0, wait_internal:0});
+  const defaultComplaintData = []
+  const [complaintLane, setComplaintLane] = useState({phone:0, instagram:0, twitter:0, email:0});
+  const [complaintFilter, setComplaintFilter] = useState ("by Status")
+  const [complaintLabel, setComplaintLabel] = useState(['Solved', 'Menunggu Konfirmasi Supplier', 'Menunggu Konfirmasi Internal'])
+  const [complaintColor, setComplaintColor] = useState(['#41B883','#E46651', '#DD1B16'])
+  const [complaintData, setComplaintData] = useState([complaintStatus.solved, complaintStatus.wait_supplier, complaintStatus.wait_internal]);
 
   // const setData = () => {
   //   // const dataTransaction = {};
@@ -58,8 +69,9 @@ const Dashboard = () => {
 
   useEffect(async ()=>{
     const fetchData = async()=>{
-      const req = await axios.get(URL+'/transaction');
+      const req = await axios.get(URL+'/dashboard');
       if(req.status===200){
+        // console.log(req.data.)
         const productSales = req.data.productSales;
         // setDataResponse(req.data)
         setMember(req.data.member);
@@ -72,13 +84,38 @@ const Dashboard = () => {
         setTelkomselTransaction(productSales.telkomsel);
         setThreeTransaction(productSales.tri);
         setXlTransaction(productSales.xl);
-        // console.log('success ',member);
+        setComplaintLane(req.data.complaint.complaintLane)
+        setComplaintStatus(req.data.complaint.statusComplaintCount)
+        setComplaintData([complaintStatus.solved, complaintStatus.wait_supplier, complaintStatus.wait_internal])
+        console.log(complaintLane.phone)
+        // console.log(complaintData)
         // setData()
       }
     }
     fetchData();
   },[])
   
+  const handleFilterComplaint = (options) =>{
+    if(options!=='status'){
+      setComplaintFilter("Social Media Channel")
+      complaintData.length = 0;
+      // complaintData.push.apply(complaintLane.phone,complaintLane.instagram,complaintLane.twitter,complaintLane.email)
+      setComplaintLabel(['Phone', 'Instagram', 'twitter', 'email'])
+      setComplaintColor(['#41B883','#E46651', '#DD1B16','#b2b841','#5d41b8'])
+      setComplaintData([complaintLane.phone, complaintLane.instagram, complaintLane.twitter, complaintLane.email])
+      console.log(complaintData);
+    }else{
+      setComplaintFilter("by Status")
+      complaintData.length = 0;
+      // complaintData.push.apply(complaintStatus.solved, complaintStatus.waiting_supplier, complaintStatus.waiting_internal)
+      setComplaintLabel(['Solved', 'Menunggu Konfirmasi Supplier', 'Menunggu Konfirmasi Internal'])
+      setComplaintColor(['#41B883','#E46651', '#DD1B16'])
+      setComplaintData([complaintStatus.solved, complaintStatus.wait_supplier, complaintStatus.wait_internal])
+      console.log(complaintData);
+    }
+
+    
+  }
 
   return (
     <>
@@ -91,9 +128,20 @@ const Dashboard = () => {
       
       <CCardGroup columns className = "cols-2" >
       <CCard>
-        <CCardHeader>
-          Transaction succeed
-        </CCardHeader>
+        <CCardHeader style={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
+            Transaction Succeed
+            <CDropdown>
+              <CDropdownToggle color="black">
+                <CIcon name="cil-settings"/>
+              </CDropdownToggle>
+              <CDropdownMenu className="pt-0" placement="bottom-end">
+                <CDropdownItem onClick={()=>{handleFilterComplaint('a')}}>by Social Media Channel </CDropdownItem>
+                <CDropdownItem onClick={()=>{handleFilterComplaint('status')}}>by Status</CDropdownItem>
+                {/* <CDropdownItem onClick={()=>{console.log('a')}}>tahunan</CDropdownItem> */}
+                {/* <CDropdownItem disabled>Disabled action</CDropdownItem> */}
+              </CDropdownMenu>
+            </CDropdown>
+          </CCardHeader>
         <CCardBody>
           <CChartPie
             datasets={[
@@ -115,17 +163,29 @@ const Dashboard = () => {
         </CCardBody>
       </CCard>
       <CCard>
-        <CCardHeader>
-          Sales by Operator
+      <CCardHeader style={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
+          Sales By Operator
+          <CDropdown>
+            <CDropdownToggle color="black">
+              <CIcon name="cil-settings"/>
+            </CDropdownToggle>
+            <CDropdownMenu className="pt-0" placement="bottom-end">
+              <CDropdownItem onClick={()=>{handleFilterComplaint('a')}}>by Social Media Channel </CDropdownItem>
+              <CDropdownItem onClick={()=>{handleFilterComplaint('status')}}>by Status</CDropdownItem>
+              {/* <CDropdownItem onClick={()=>{console.log('a')}}>tahunan</CDropdownItem> */}
+              {/* <CDropdownItem disabled>Disabled action</CDropdownItem> */}
+            </CDropdownMenu>
+          </CDropdown>
         </CCardHeader>
         <CCardBody>
           <CChartPie
             datasets={[
               {
                 backgroundColor: [
-                  '#41B883',
-                  '#E46651',
+                  
                   '#00D8FF',
+                  '#E46651',
+                  '#41B883',
                   '#DD1B16',
                   '#b2b841',
                   '#5d41b8'
@@ -134,6 +194,73 @@ const Dashboard = () => {
               }
             ]}
             labels={['Axis', 'Indosat', 'Smartfren', 'Telkomsel', 'Three', 'XL']}
+            options={{
+              tooltips: {
+                enabled: true
+              }
+            }}
+          />
+        </CCardBody>
+      </CCard>
+      <CCard>
+        <CCardHeader style={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
+          Complaint Handling {complaintFilter}
+          <CDropdown>
+            <CDropdownToggle color="black">
+              <CIcon name="cil-settings"/>
+            </CDropdownToggle>
+            <CDropdownMenu className="pt-0" placement="bottom-end">
+              <CDropdownItem onClick={()=>{handleFilterComplaint('a')}}>by Social Media Channel </CDropdownItem>
+              <CDropdownItem onClick={()=>{handleFilterComplaint('status')}}>by Status</CDropdownItem>
+              {/* <CDropdownItem onClick={()=>{console.log('a')}}>tahunan</CDropdownItem> */}
+              {/* <CDropdownItem disabled>Disabled action</CDropdownItem> */}
+            </CDropdownMenu>
+          </CDropdown>
+        </CCardHeader>
+        
+        <CCardBody>
+          <CChartPie
+            datasets={[
+              {
+                backgroundColor: 
+                  complaintColor
+                ,
+                data: [complaintStatus.solved, complaintStatus.wait_supplier, complaintStatus.wait_internal]
+              }
+            ]}
+            labels={complaintLabel}
+            options={{
+              tooltips: {
+                enabled: true
+              }
+            }}
+          />
+        </CCardBody>
+      </CCard>
+      <CCard>
+        <CCardHeader style={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
+          Complaint Handlings
+          <CDropdown>
+            <CDropdownToggle color="black">
+              <CIcon name="cil-settings"/>
+            </CDropdownToggle>
+            <CDropdownMenu className="pt-0" placement="bottom-end">
+              <CDropdownItem onClick={()=>{handleFilterComplaint('a')}}>by Social Media Channel </CDropdownItem>
+              <CDropdownItem onClick={()=>{handleFilterComplaint('status')}}>by Status</CDropdownItem>
+            </CDropdownMenu>
+          </CDropdown>
+        </CCardHeader>
+        
+        <CCardBody>
+          <CChartPie
+            datasets={[
+              {
+                backgroundColor: 
+                ['#41B883','#E46651', '#00D8FF','#b2b841','#5d41b8'],
+                data: [complaintLane.phone,complaintLane.instagram,complaintLane.twitter,complaintLane.email]
+              }
+            ]}
+            labels={['Phone', 'Instagram', 'twitter', 'email']}
             options={{
               tooltips: {
                 enabled: true

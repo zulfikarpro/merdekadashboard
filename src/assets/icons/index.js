@@ -1,6 +1,7 @@
 import { sygnet } from './sygnet'
 import { logo } from './logo'
 import { logoNegative } from './logo-negative'
+import {pulsaLogo} from './pulsa-logo'
 
 import {
   cibSkype,
@@ -133,6 +134,7 @@ import {
 export const icons = Object.assign({}, {
   sygnet,
   logo,
+  pulsaLogo,
   logoNegative
 }, {
   cilAlignCenter,

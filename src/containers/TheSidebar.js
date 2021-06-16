@@ -23,16 +23,17 @@ const TheSidebar = () => {
 
   return (
     <CSidebar
+    style={{backgroundColor:'#df'}}
       show={show}
       onShowChange={(val) => dispatch({type: 'set', sidebarShow: val })}
     >
       <CSidebarBrand className="d-md-down-none" to="/">
-        {/* <CIcon
+        <CIcon
           className="c-sidebar-brand-full"
-          name="logo-negative"
-          height={35}
-        /> */}
-        <h2>PULSA</h2>
+          name="pulsa-logo"
+          height={100}
+        />
+        {/* <h2>PULSA</h2> */}
         {/* <CIcon
           className="c-sidebar-brand-minimized"
           name="sygnet"
