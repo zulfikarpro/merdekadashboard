@@ -36,7 +36,7 @@ const WidgetsDropdown = lazy(() => import('../widgets/WidgetsDropdown.js'))
 // const WidgetsBrand = lazy(() => import('../widgets/WidgetsBrand.js'))
 
 const Dashboard = () => {
-  const URL = process.env.REACT_APP_ENVIRONMENT==="production"? "http://170.187.226.245:4031" : "http://localhost:4031"
+  const URL = process.env.REACT_APP_ENVIRONMENT==="production"? "http://54.179.152.218:4031" : "http://localhost:4031"
   // console.log(URL)
   // const [dataResponse, setDataResponse] = useState({});
   const [member, setMember] = useState(0);
@@ -86,8 +86,9 @@ const Dashboard = () => {
         setXlTransaction(productSales.xl);
         setComplaintLane(req.data.complaint.complaintLane)
         setComplaintStatus(req.data.complaint.statusComplaintCount)
-        setComplaintData([complaintStatus.solved, complaintStatus.wait_supplier, complaintStatus.wait_internal])
-        console.log(complaintLane.phone)
+        // setComplaintData([complaintStatus.solved, complaintStatus.wait_supplier, complaintStatus.wait_internal])
+        console.log('complaintStatus', complaintStatus)
+        // console.log(.phone)
         // console.log(complaintData)
         // setData()
       }
@@ -135,10 +136,10 @@ const Dashboard = () => {
                 <CIcon name="cil-settings"/>
               </CDropdownToggle>
               <CDropdownMenu className="pt-0" placement="bottom-end">
-                <CDropdownItem onClick={()=>{handleFilterComplaint('a')}}>by Social Media Channel </CDropdownItem>
-                <CDropdownItem onClick={()=>{handleFilterComplaint('status')}}>by Status</CDropdownItem>
+                {/* <CDropdownItem onClick={()=>{handleFilterComplaint('a')}}>by Social Media Channel </CDropdownItem>
+                <CDropdownItem onClick={()=>{handleFilterComplaint('status')}}>by Status</CDropdownItem> */}
                 {/* <CDropdownItem onClick={()=>{console.log('a')}}>tahunan</CDropdownItem> */}
-                {/* <CDropdownItem disabled>Disabled action</CDropdownItem> */}
+                <CDropdownItem disabled>Disabled action</CDropdownItem>
               </CDropdownMenu>
             </CDropdown>
           </CCardHeader>
@@ -163,6 +164,41 @@ const Dashboard = () => {
         </CCardBody>
       </CCard>
       <CCard>
+        <CCardHeader style={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
+          Complaint Handling {complaintFilter}
+          <CDropdown>
+            <CDropdownToggle color="black">
+              <CIcon name="cil-settings"/>
+            </CDropdownToggle>
+            <CDropdownMenu className="pt-0" placement="bottom-end">
+              {/* <CDropdownItem onClick={()=>{handleFilterComplaint('a')}}>by Social Media Channel </CDropdownItem>
+              <CDropdownItem onClick={()=>{handleFilterComplaint('status')}}>by Status</CDropdownItem> */}
+              {/* <CDropdownItem onClick={()=>{console.log('a')}}>tahunan</CDropdownItem> */}
+              <CDropdownItem disabled>Disabled action</CDropdownItem>
+            </CDropdownMenu>
+          </CDropdown>
+        </CCardHeader>
+        
+        <CCardBody>
+          <CChartPie
+            datasets={[
+              {
+                backgroundColor: 
+                  complaintColor
+                ,
+                data: [complaintStatus.solved, complaintStatus.wait_supplier, complaintStatus.wait_internal]
+              }
+            ]}
+            labels={complaintLabel}
+            options={{
+              tooltips: {
+                enabled: true
+              }
+            }}
+          />
+        </CCardBody>
+      </CCard>
+      <CCard>
       <CCardHeader style={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
           Sales By Operator
           <CDropdown>
@@ -170,10 +206,10 @@ const Dashboard = () => {
               <CIcon name="cil-settings"/>
             </CDropdownToggle>
             <CDropdownMenu className="pt-0" placement="bottom-end">
-              <CDropdownItem onClick={()=>{handleFilterComplaint('a')}}>by Social Media Channel </CDropdownItem>
-              <CDropdownItem onClick={()=>{handleFilterComplaint('status')}}>by Status</CDropdownItem>
+              {/* <CDropdownItem onClick={()=>{handleFilterComplaint('a')}}>by Social Media Channel </CDropdownItem>
+              <CDropdownItem onClick={()=>{handleFilterComplaint('status')}}>by Status</CDropdownItem> */}
               {/* <CDropdownItem onClick={()=>{console.log('a')}}>tahunan</CDropdownItem> */}
-              {/* <CDropdownItem disabled>Disabled action</CDropdownItem> */}
+              <CDropdownItem disabled>Disabled action</CDropdownItem>
             </CDropdownMenu>
           </CDropdown>
         </CCardHeader>
@@ -204,49 +240,15 @@ const Dashboard = () => {
       </CCard>
       <CCard>
         <CCardHeader style={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
-          Complaint Handling {complaintFilter}
-          <CDropdown>
-            <CDropdownToggle color="black">
-              <CIcon name="cil-settings"/>
-            </CDropdownToggle>
-            <CDropdownMenu className="pt-0" placement="bottom-end">
-              <CDropdownItem onClick={()=>{handleFilterComplaint('a')}}>by Social Media Channel </CDropdownItem>
-              <CDropdownItem onClick={()=>{handleFilterComplaint('status')}}>by Status</CDropdownItem>
-              {/* <CDropdownItem onClick={()=>{console.log('a')}}>tahunan</CDropdownItem> */}
-              {/* <CDropdownItem disabled>Disabled action</CDropdownItem> */}
-            </CDropdownMenu>
-          </CDropdown>
-        </CCardHeader>
-        
-        <CCardBody>
-          <CChartPie
-            datasets={[
-              {
-                backgroundColor: 
-                  complaintColor
-                ,
-                data: [complaintStatus.solved, complaintStatus.wait_supplier, complaintStatus.wait_internal]
-              }
-            ]}
-            labels={complaintLabel}
-            options={{
-              tooltips: {
-                enabled: true
-              }
-            }}
-          />
-        </CCardBody>
-      </CCard>
-      <CCard>
-        <CCardHeader style={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
           Complaint Handlings
           <CDropdown>
             <CDropdownToggle color="black">
               <CIcon name="cil-settings"/>
             </CDropdownToggle>
             <CDropdownMenu className="pt-0" placement="bottom-end">
-              <CDropdownItem onClick={()=>{handleFilterComplaint('a')}}>by Social Media Channel </CDropdownItem>
-              <CDropdownItem onClick={()=>{handleFilterComplaint('status')}}>by Status</CDropdownItem>
+              {/* <CDropdownItem onClick={()=>{handleFilterComplaint('a')}}>by Social Media Channel </CDropdownItem>
+              <CDropdownItem onClick={()=>{handleFilterComplaint('status')}}>by Status</CDropdownItem> */}
+              <CDropdownItem disabled>Disabled action</CDropdownItem>
             </CDropdownMenu>
           </CDropdown>
         </CCardHeader>
