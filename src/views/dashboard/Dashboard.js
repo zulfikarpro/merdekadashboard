@@ -14,8 +14,8 @@ import {
   CDropdown,
   CDropdownMenu,
   CDropdownItem,
-  CDropdownToggle
-  // CCallout
+  CDropdownToggle,
+  CCallout
 } from '@coreui/react'
 import {
   // CChartBar,
@@ -33,7 +33,7 @@ import axios from 'axios'
 
 // import currency from '../../utils/currency'
 const WidgetsDropdown = lazy(() => import('../widgets/WidgetsDropdown.js'))
-// const WidgetsBrand = lazy(() => import('../widgets/WidgetsBrand.js'))
+const WidgetsBrand = lazy(() => import('../widgets/WidgetsBrand.js'))
 
 const Dashboard = () => {
   const URL = process.env.REACT_APP_ENVIRONMENT==="production"? "http://54.179.152.218:4031" : "http://localhost:4031"
@@ -56,7 +56,8 @@ const Dashboard = () => {
   const [complaintLabel, setComplaintLabel] = useState(['Solved', 'Menunggu Konfirmasi Supplier', 'Menunggu Konfirmasi Internal'])
   const [complaintColor, setComplaintColor] = useState(['#41B883','#E46651', '#DD1B16'])
   const [complaintData, setComplaintData] = useState([complaintStatus.solved, complaintStatus.wait_supplier, complaintStatus.wait_internal]);
-
+  const [selectedFilter, setSelectedFilter] = useState("Month");
+  const [complaintByDate, setComplaintByDate] = useState('');
   // const setData = () => {
   //   // const dataTransaction = {};
   //   setMember(dataResponse.member);
@@ -71,7 +72,7 @@ const Dashboard = () => {
     const fetchData = async()=>{
       const req = await axios.get(URL+'/dashboard');
       if(req.status===200){
-        // console.log(req.data.)
+        console.log(req.data)
         const productSales = req.data.productSales;
         // setDataResponse(req.data)
         setMember(req.data.member);
@@ -86,8 +87,9 @@ const Dashboard = () => {
         setXlTransaction(productSales.xl);
         setComplaintLane(req.data.complaint.complaintLane)
         setComplaintStatus(req.data.complaint.statusComplaintCount)
+        setComplaintByDate(req.data.complaint.complaintByDate)
         // setComplaintData([complaintStatus.solved, complaintStatus.wait_supplier, complaintStatus.wait_internal])
-        console.log('complaintStatus', complaintStatus)
+        // console.log('complaintStatus', complaintStatus)
         // console.log(.phone)
         // console.log(complaintData)
         // setData()
@@ -272,17 +274,17 @@ const Dashboard = () => {
         </CCardBody>
       </CCard>
       </CCardGroup>
-      {/* <CCard>
+      <CCard>
         <CCardBody>
           <CRow>
             <CCol sm="5">
-              <h4 id="traffic" className="card-title mb-0">Traffic</h4>
-              <div className="small text-muted">November 2017</div>
+              <h4 id="cp" className="card-title mb-0">Complaint Report</h4>
+              <div className="small text-muted"></div>
             </CCol>
             <CCol sm="7" className="d-none d-md-block">
-              <CButton color="primary" className="float-right">
+              {/* <CButton color="primary" className="float-right">
                 <CIcon name="cil-cloud-download"/>
-              </CButton>
+              </CButton> */}
               <CButtonGroup className="float-right mr-3">
                 {
                   ['Day', 'Month', 'Year'].map(value => (
@@ -290,7 +292,8 @@ const Dashboard = () => {
                       color="outline-secondary"
                       key={value}
                       className="mx-0"
-                      active={value === 'Month'}
+                      active={value === selectedFilter}
+                      onClick={()=>{console.log(value)}}
                     >
                       {value}
                     </CButton>
@@ -299,9 +302,9 @@ const Dashboard = () => {
               </CButtonGroup>
             </CCol>
           </CRow>
-          <MainChartExample style={{height: '300px', marginTop: '40px'}}/>
+          <MainChartExample complaintData={complaintByDate} style={{height: '300px', marginTop: '40px'}}/>
         </CCardBody>
-        <CCardFooter>
+        {/* <CCardFooter>
           <CRow className="text-center">
             <CCol md sm="12" className="mb-sm-2 mb-0">
               <div className="text-muted">Visits</div>
@@ -353,8 +356,8 @@ const Dashboard = () => {
               />
             </CCol>
           </CRow>
-        </CCardFooter>
-      </CCard> */}
+        </CCardFooter> */}
+      </CCard>
 
       {/* <WidgetsBrand withCharts/> */}
 

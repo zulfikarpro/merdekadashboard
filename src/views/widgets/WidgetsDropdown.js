@@ -11,7 +11,7 @@ import {
 import CIcon from '@coreui/icons-react'
 import ChartLineSimple from '../charts/ChartLineSimple'
 import currency from '../../utils/currency'
-// import ChartBarSimple from '../charts/ChartBarSimple'
+import ChartBarSimple from '../charts/ChartBarSimple'
 
 // import contentResponse from '../../response.json'
 
