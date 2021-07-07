@@ -30,6 +30,7 @@ import CIcon from '@coreui/icons-react'
 
 import MainChartExample from '../charts/MainChartExample.js'
 import axios from 'axios'
+import { useHistory } from 'react-router-dom'
 
 // import currency from '../../utils/currency'
 const WidgetsDropdown = lazy(() => import('../widgets/WidgetsDropdown.js'))
@@ -68,7 +69,11 @@ const Dashboard = () => {
   //   // setTransactionStatus.Failed(dataResponse.transaction['failed'])
   // }
 
+  let history = useHistory();
   useEffect(async ()=>{
+    if(!localStorage.getItem('auth_token')){
+      history.push('/login')
+    }
     const fetchData = async()=>{
       const req = await axios.get(URL+'/dashboard');
       if(req.status===200){
@@ -292,7 +297,7 @@ const Dashboard = () => {
                       color="outline-secondary"
                       key={value}
                       className="mx-0"
-                      active={value === selectedFilter}
+                      active={value === 'Day'}
                       onClick={()=>{console.log(value)}}
                     >
                       {value}
